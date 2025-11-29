@@ -1,20 +1,15 @@
-import axios from "axios";
 import {useEffect, useState} from "react";
 import {Book} from "@/models/book";
+import {instance} from "@/utils/fetching";
 
 export default function Home() {
 
   const [books, setBooks] = useState<Book[]>([]);
 
-  const instance = axios.create({
-    baseURL: "http://localhost:3001/api",
-    headers: {"Cache-Control": "no-cache"}
-  });
-
   useEffect(() => {
     instance({
-      url: '/books',
-      method: 'get'
+      url: "/books",
+      method: "get"
     })
         .then(res => setBooks(res.data))
         .catch(err => console.log(err));
