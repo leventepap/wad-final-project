@@ -1,0 +1,38 @@
+INSERT INTO BOOK (ISBN, TITLE, EDITION, PUBLICATION) VALUES
+(9780606323451, 'Harry Potter and the Philosopher''s Stone', '1st', '1997-06-26'),
+(9780007129713, 'The Lord of the Rings: The Fellowship of the Ring', '1st', '1954-07-29'),
+(9780007459483, 'A Game of Thrones', '1st', '1996-08-06');
+
+INSERT INTO COPY (ID, ACQUIRED, RETIRED, ISBN) VALUES
+(1, '2000-01-01', NULL, 9780606323451),
+(2, '2005-05-15', NULL, 9780606323451),
+(1, '1960-03-10', NULL, 9780007129713),
+(2, '1970-07-20', '1990-01-01', 9780007129713),
+(1, '1997-09-01', NULL, 9780007459483);
+
+INSERT INTO PERSON (NAME, ADDRESS, EMAIL, PHONE_NUMBER) VALUES
+('J.K. Rowling', 'Edinburgh, Scotland', 'jkrowling@example.com', 44131234567),
+('J.R.R. Tolkien', 'Oxford, England', 'tolkien@example.com', 441865765432),
+('George R.R. Martin', 'Santa Fe, USA', 'grrm@example.com', 15055551234),
+('Sarah Miller', '9 Staff Ave, Miami', 'sarah@example.com', 41794561234),
+('Tom Smith', '12 Member St, New York', 'tom@example.com', 41795678901);
+
+INSERT INTO AUTHOR (PERSON_ID) VALUES
+(1),
+(2),
+(3);
+
+INSERT INTO AUTHOR_BOOK (author, book) VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
+INSERT INTO MEMBER (PERSON_ID, JOINED, TERMINATED) VALUES
+(5, '2022-05-15', NULL);
+
+INSERT INTO STAFF (PERSON_ID, JOINED, TERMINATED, ROLE) VALUES
+(4, '2018-09-01', NULL, 'Librarian');
+
+INSERT INTO LOAN (BORROW_DATE, DUE_DATE, RETURN_DATE, COPY_ID_ID, COPY_ID_ISBN, ISSUER_ID, MEMBER_ID) VALUES
+('2023-01-10 10:00:00', '2023-02-10 10:00:00', '2023-02-05 14:00:00', 1, 9780606323451, 4, 5),
+('2023-03-01 09:30:00', '2023-03-31 09:30:00', NULL, 1, 9780007459483, 4, 5);
