@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const db = require("./db");
-const { handleError } = require("./utils");
+const db = require("../db");
+const { handleError } = require("../utils");
 
 router.get("/", (req, res) => {
     const query = "SELECT * FROM PERSON";

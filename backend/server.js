@@ -5,7 +5,7 @@ const PORT = 3001;
 
 app.use(express.json());
 
-const bookRoutes = require("./book");
+const bookRoutes = require("./routes/book");
 
 app.use(cors());
 app.use("/api/book", bookRoutes);
