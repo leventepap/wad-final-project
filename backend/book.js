@@ -4,14 +4,16 @@ const db = require("./db");
 const { handleError } = require("./utils");
 
 router.get("/", (req, res) => {
-    db.all("SELECT * FROM BOOK", [], (err, rows) => {
+    const query = "SELECT * FROM BOOK";
+    db.all(query, [], (err, rows) => {
         if (err) return handleError(err, res, 500);
         res.json(rows);
     });
 });
 
 router.get("/:id", (req, res) => {
-    db.get("SELECT * FROM BOOK WHERE ISBN = ?", [req.params.id], (err, row) => {
+    const query = "SELECT * FROM BOOK WHERE ISBN = ?";
+    db.get(query, [req.params.id], (err, row) => {
         if (err) return handleError(err, res, 500);
         res.json(row);
     });
@@ -19,14 +21,11 @@ router.get("/:id", (req, res) => {
 
 router.post("/", (req, res) => {
     const { ISBN, TITLE, EDITION, PUBLICATION } = req.body;
-    db.run(
-        "INSERT INTO BOOK (ISBN, TITLE, EDITION, PUBLICATION) VALUES (?, ?, ?, ?)",
-        [ISBN, TITLE, EDITION, PUBLICATION],
-        function (err) {
-            if (err) return handleError(err, res, 500);
-            res.json({ id: this.lastID });
-        }
-    );
+    const query = "INSERT INTO BOOK (ISBN, TITLE, EDITION, PUBLICATION) VALUES (?, ?, ?, ?)";
+    db.run(query, [ISBN, TITLE, EDITION, PUBLICATION], (err) => {
+        if (err) return handleError(err, res, 500);
+        res.json({ id: this.lastID });
+    });
 });
 
 router.patch("/:id", (req, res) => {
@@ -52,14 +51,14 @@ router.patch("/:id", (req, res) => {
 
     values.push(req.params.id); // ISBN at the end for the WHERE clause
     const query = `UPDATE BOOK SET ${fields.join(", ")} WHERE ISBN = ?`;
-    db.run(query, values, function (err) {
+    db.run(query, values, (err) => {
         if (err) return handleError(err, res, 500);
         res.json({ updatedRows: this.changes });
     });
 });
 
 router.delete("/:id", (req, res) => {
-    db.run("DELETE FROM BOOK WHERE ISBN = ?", [req.params.id], function (err) {
+    db.run("DELETE FROM BOOK WHERE ISBN = ?", [req.params.id], (err) => {
         if (err) return handleError(err, res, 500);
         res.json({ deletedRows: this.changes });
     });

@@ -4,14 +4,16 @@ const db = require("./db");
 const { handleError } = require("./utils");
 
 router.get("/", (req, res) => {
-    db.all("SELECT * FROM PERSON", [], (err, rows) => {
+    const query = "SELECT * FROM PERSON";
+    db.all(query, [], (err, rows) => {
         if (err) return handleError(err, res, 500);
         res.json(rows);
     });
 });
 
 router.get("/:id", (req, res) => {
-    db.get("SELECT * FROM PERSON WHERE ID = ?", [req.params.id], (err, row) => {
+    const query = "SELECT * FROM PERSON WHERE ID = ?";
+    db.get(query, [req.params.id], (err, row) => {
         if (err) return handleError(err, res, 500);
         res.json(row);
     });
@@ -19,14 +21,11 @@ router.get("/:id", (req, res) => {
 
 router.post("/", (req, res) => {
     const { NAME, ADDRESS, EMAIL, PHONE_NUMBER } = req.body;
-    db.run(
-        "INSERT INTO PERSON (NAME, ADDRESS, EMAIL, PHONE_NUMBER) VALUES (?, ?, ?, ?)",
-        [NAME, ADDRESS, EMAIL, PHONE_NUMBER],
-        function (err) {
-            if (err) return handleError(err, res, 500);
-            res.json({ id: this.lastID });
-        }
-    );
+    const query = "INSERT INTO PERSON (NAME, ADDRESS, EMAIL, PHONE_NUMBER) VALUES (?, ?, ?, ?)";
+    db.run(query, [NAME, ADDRESS, EMAIL, PHONE_NUMBER], (err) => {
+        if (err) return handleError(err, res, 500);
+        res.json({ id: this.lastID });
+    });
 });
 
 router.patch("/:id", (req, res) => {
@@ -56,14 +55,14 @@ router.patch("/:id", (req, res) => {
 
     values.push(req.params.id); // ID at the end for the WHERE clause
     const query = `UPDATE PERSON SET ${fields.join(", ")} WHERE ID = ?`;
-    db.run(query, values, function (err) {
+    db.run(query, values, (err) => {
         if (err) return handleError(err, res, 500);
         res.json({ updatedRows: this.changes });
     });
 });
 
 router.delete("/:id", (req, res) => {
-    db.run("DELETE FROM PERSON WHERE ID = ?", [req.params.id], function (err) {
+    db.run("DELETE FROM PERSON WHERE ID = ?", [req.params.id], (err) => {
         if (err) return handleError(err, res, 500);
         res.json({ deletedRows: this.changes });
     });
