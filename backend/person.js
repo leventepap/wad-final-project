@@ -4,24 +4,24 @@ const db = require("./db");
 const { handleError } = require("./utils");
 
 router.get("/", (req, res) => {
-    db.all("SELECT * FROM BOOK", [], (err, rows) => {
+    db.all("SELECT * FROM PERSON", [], (err, rows) => {
         if (err) return handleError(err, res, 500);
         res.json(rows);
     });
 });
 
 router.get("/:id", (req, res) => {
-    db.get("SELECT * FROM BOOK WHERE ISBN = ?", [req.params.id], (err, row) => {
+    db.get("SELECT * FROM PERSON WHERE ID = ?", [req.params.id], (err, row) => {
         if (err) return handleError(err, res, 500);
         res.json(row);
     });
 });
 
 router.post("/", (req, res) => {
-    const { ISBN, TITLE, EDITION, PUBLICATION } = req.body;
+    const { NAME, ADDRESS, EMAIL, PHONE_NUMBER } = req.body;
     db.run(
-        "INSERT INTO BOOK (ISBN, TITLE, EDITION, PUBLICATION) VALUES (?, ?, ?, ?)",
-        [ISBN, TITLE, EDITION, PUBLICATION],
+        "INSERT INTO PERSON (NAME, ADDRESS, EMAIL, PHONE_NUMBER) VALUES (?, ?, ?, ?)",
+        [NAME, ADDRESS, EMAIL, PHONE_NUMBER],
         function (err) {
             if (err) return handleError(err, res, 500);
             res.json({ id: this.lastID });
@@ -30,28 +30,32 @@ router.post("/", (req, res) => {
 });
 
 router.patch("/:id", (req, res) => {
-    const { TITLE, EDITION, PUBLICATION } = req.body;
+    const { NAME, ADDRESS, EMAIL, PHONE_NUMBER } = req.body;
     const fields = [];
     const values = [];
 
-    if (TITLE) {
-        fields.push("TITLE = ?");
-        values.push(TITLE);
+    if (NAME) {
+        fields.push("NAME = ?");
+        values.push(NAME);
     }
-    if (EDITION) {
-        fields.push("EDITION = ?");
-        values.push(EDITION);
+    if (ADDRESS) {
+        fields.push("ADDRESS = ?");
+        values.push(ADDRESS);
     }
-    if (PUBLICATION) {
-        fields.push("PUBLICATION = ?");
-        values.push(PUBLICATION);
+    if (EMAIL) {
+        fields.push("EMAIL = ?");
+        values.push(EMAIL);
+    }
+    if (PHONE_NUMBER) {
+        fields.push("PHONE_NUMBER = ?");
+        values.push(PHONE_NUMBER);
     }
     if (fields.length === 0) {
         return handleError(new Error("No fields to update"), res, 400);
     }
 
-    values.push(req.params.id); // ISBN at the end for the WHERE clause
-    const query = `UPDATE BOOK SET ${fields.join(", ")} WHERE ISBN = ?`;
+    values.push(req.params.id); // ID at the end for the WHERE clause
+    const query = `UPDATE PERSON SET ${fields.join(", ")} WHERE ID = ?`;
     db.run(query, values, function (err) {
         if (err) return handleError(err, res, 500);
         res.json({ updatedRows: this.changes });
@@ -59,7 +63,7 @@ router.patch("/:id", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
-    db.run("DELETE FROM BOOK WHERE ISBN = ?", [req.params.id], function (err) {
+    db.run("DELETE FROM PERSON WHERE ID = ?", [req.params.id], function (err) {
         if (err) return handleError(err, res, 500);
         res.json({ deletedRows: this.changes });
     });

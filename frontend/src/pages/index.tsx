@@ -8,7 +8,7 @@ export default function Home() {
 
   useEffect(() => {
     instance({
-      url: "/books",
+      url: "/book",
       method: "get"
     })
         .then(res => setBooks(res.data))
