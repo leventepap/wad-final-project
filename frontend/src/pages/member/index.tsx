@@ -4,7 +4,7 @@ import {instance} from "@/utils/fetching";
 import Page from "@/components/page";
 import MemberTable from "@/components/member-table";
 
-export default function MemberPage() {
+export default function MembersPage() {
 
     const [members, setMembers] = useState<Member[]>([]);
 

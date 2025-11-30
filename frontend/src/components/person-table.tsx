@@ -15,10 +15,7 @@ export default function PersonTable(props: { persons: Person[] }) {
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                 {props.persons.map((person) => (
-                    <tr
-                        key={person.ID}
-                        className="hover:bg-gray-50 transition-colors duration-200"
-                    >
+                    <tr key={person.ID} className="hover:bg-gray-50 transition-colors duration-200">
                         <td className="px-6 py-4 whitespace-nowrap text-sm">{person.ID}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">{person.NAME}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">{person.EMAIL}</td>

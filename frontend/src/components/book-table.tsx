@@ -14,10 +14,7 @@ export default function BookTable(props: { books: Book[] }) {
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                     {props.books.map((book) => (
-                        <tr 
-                            key={book.ISBN}
-                            className="hover:bg-gray-50 transition-colors duration-200"
-                        >
+                        <tr key={book.ISBN} className="hover:bg-gray-50 transition-colors duration-200">
                             <td className="px-6 py-4 whitespace-nowrap text-sm">{book.ISBN}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm">{book.TITLE}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm">{book.EDITION}</td>

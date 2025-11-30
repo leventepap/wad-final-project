@@ -1,5 +1,6 @@
 import {Member} from "@/models/member";
 import Tag from "@/components/tag";
+import Link from "next/link";
 
 export default function MemberTable(props: { members: Member[] }) {
     return (
@@ -15,18 +16,14 @@ export default function MemberTable(props: { members: Member[] }) {
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                 {props.members.map((member) => (
-                    <tr
-                        key={member.ID}
-                        className="hover:bg-gray-50 transition-colors duration-200"
-                    >
+                    <tr key={member.ID} className="hover:bg-gray-50 transition-colors duration-200">
                         <td className="px-6 py-4 whitespace-nowrap text-sm">{member.ID}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm">{member.NAME}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-indigo-500">
+                            <Link href={`/member/${member.ID}`}>{member.NAME}</Link>
+                        </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">{member.EMAIL}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">
-                            {member.TERMINATED === null ?
-                                <Tag title="Active" color="green"/> :
-                                <Tag title="Terminated" color="red"/>
-                            }
+                            <Tag title={!member.TERMINATED ? "Active" : "Terminated"} color={member.TERMINATED ? "red" : "green"}/>
                         </td>
                     </tr>
                 ))}

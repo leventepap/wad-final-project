@@ -4,7 +4,7 @@ import {instance} from "@/utils/fetching";
 import Page from "@/components/page";
 import BookTable from "@/components/book-table";
 
-export default function BookPage() {
+export default function BooksPage() {
 
     const [books, setBooks] = useState<Book[]>([]);
 

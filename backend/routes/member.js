@@ -11,4 +11,12 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/:id", (req, res) => {
+    const query = "SELECT * FROM PERSON INNER JOIN MEMBER ON PERSON.ID = MEMBER.PERSON_ID WHERE PERSON_ID = ?";
+    db.get(query, [req.params.id], (err, row) => {
+        if (err) return handleError(err, res, 500);
+        res.json(row);
+    });
+});
+
 module.exports = router;
