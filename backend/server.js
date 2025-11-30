@@ -7,10 +7,12 @@ app.use(express.json());
 
 const bookRoutes = require("./routes/book");
 const personRoutes = require("./routes/person");
+const memberRoutes = require("./routes/member");
 
 app.use(cors());
 app.use("/api/book", bookRoutes);
 app.use("/api/person", personRoutes);
+app.use("/api/member", memberRoutes);
 
 app.listen(PORT, () => {
     console.log(`Library backend server running on http://localhost:${PORT}`);

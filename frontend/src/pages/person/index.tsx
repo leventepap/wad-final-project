@@ -4,7 +4,7 @@ import {instance} from "@/utils/fetching";
 import Page from "@/components/page";
 import PersonTable from "@/components/person-table";
 
-export default function BookPage() {
+export default function PersonPage() {
 
     const [persons, setPersons] = useState<Person[]>([]);
 

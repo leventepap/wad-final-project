@@ -15,7 +15,8 @@ export default function Page({children, title}: WrapperProps) {
                     <div className="flex justify-around">
                         <Link href="/">Home</Link>
                         <Link href="/book">Books</Link>
-                        <Link href="/person">People</Link>
+                        <Link href="/person">Persons</Link>
+                        <Link href="/member">Members</Link>
                     </div>
                 </div>
 
