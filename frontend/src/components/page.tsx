@@ -17,6 +17,7 @@ export default function Page({children, title}: WrapperProps) {
                         <Link href="/book">Books</Link>
                         <Link href="/person">Persons</Link>
                         <Link href="/member">Members</Link>
+                        <Link href="/loan">Loans</Link>
                     </div>
                 </div>
 
