@@ -9,10 +9,7 @@ export default function BooksPage() {
     const [books, setBooks] = useState<Book[]>([]);
 
     useEffect(() => {
-        instance({
-            url: "/book",
-            method: "get"
-        })
+        instance.get("/book")
             .then(res => setBooks(res.data))
             .catch(err => console.log(err));
     },[])

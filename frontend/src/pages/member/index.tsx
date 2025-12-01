@@ -9,10 +9,7 @@ export default function MembersPage() {
     const [members, setMembers] = useState<Member[]>([]);
 
     useEffect(() => {
-        instance({
-            url: "/member",
-            method: "get"
-        })
+        instance.get("/member")
             .then(res => setMembers(res.data))
             .catch(err => console.log(err));
     },[])

@@ -9,10 +9,7 @@ export default function PersonsPage() {
     const [persons, setPersons] = useState<Person[]>([]);
 
     useEffect(() => {
-        instance({
-            url: "/person",
-            method: "get"
-        })
+        instance.get("/person")
             .then(res => setPersons(res.data))
             .catch(err => console.log(err));
     },[])

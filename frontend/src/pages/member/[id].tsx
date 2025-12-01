@@ -12,10 +12,7 @@ export default function MemberPage() {
 
     useEffect(() => {
         if (!router.query.id) return;
-        instance({
-            url: `/member/${router.query.id}`,
-            method: "get"
-        })
+        instance.get(`/member/${router.query.id}`)
             .then(res => setMember(res.data))
             .catch(err => console.log(err));
     },[router.query.id])
@@ -23,7 +20,7 @@ export default function MemberPage() {
     if (member) {
         return (
             <Page title={member.NAME}>
-                <MemberDetails member={member}/>
+                <MemberDetails member={member} setMember={setMember}/>
             </Page>
         );
     }

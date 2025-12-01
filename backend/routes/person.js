@@ -54,10 +54,19 @@ router.patch("/:id", (req, res) => {
     }
 
     values.push(req.params.id); // ID at the end for the WHERE clause
-    const query = `UPDATE PERSON SET ${fields.join(", ")} WHERE ID = ?`;
-    db.run(query, values, (err) => {
+    const updateQuery = `UPDATE PERSON SET ${fields.join(", ")} WHERE ID = ?`;
+    
+    db.run(updateQuery, values, function(err) {
         if (err) return handleError(err, res, 500);
-        res.json({ updatedRows: this.changes });
+        if (this.changes === 0) {
+            return handleError(new Error("Person not found"), res, 404);
+        }
+
+        const selectQuery = "SELECT * FROM PERSON WHERE ID = ?";
+        db.get(selectQuery, [req.params.id], (err, row) => {
+            if (err) return handleError(err, res, 500);
+            res.json(row);
+        });
     });
 });
 
