@@ -1,22 +1,22 @@
 import {useEffect, useState} from "react";
-import {Person} from "@/models/person";
+import {PersonOverview} from "@/models/person-overview";
 import {instance} from "@/utils/fetching";
 import Page from "@/components/page";
-import PersonTable from "@/components/person-table";
+import PersonOverviewTable from "@/components/person-overview-table";
 
 export default function PersonsPage() {
 
-    const [persons, setPersons] = useState<Person[]>([]);
+    const [persons, setPersons] = useState<PersonOverview[]>([]);
 
     useEffect(() => {
-        instance.get("/person")
+        instance.get("/person/overview")
             .then(res => setPersons(res.data))
             .catch(err => console.log(err));
     },[])
 
     return (
         <Page title="Persons">
-            <PersonTable persons={persons}/>
+            <PersonOverviewTable persons={persons}/>
         </Page>
     );
 }
