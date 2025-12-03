@@ -19,6 +19,15 @@ router.get("/overview", (req, res) => {
     })
 });
 
+router.post("/search", (req, res) => {
+    const { SEARCH } = req.body;
+    const query = "SELECT p.ID, p.NAME, p.ADDRESS, a.PERSON_ID as AUTHOR_PERSON_ID, m.PERSON_ID as MEMBER_PERSON_ID, s.PERSON_ID as STAFF_PERSON_ID FROM PERSON p LEFT JOIN AUTHOR a ON p.ID = a.PERSON_ID LEFT JOIN MEMBER m ON p.ID = m.PERSON_ID LEFT JOIN STAFF s ON p.ID = s.PERSON_ID WHERE p.NAME LIKE ? OR p.ADDRESS LIKE ? OR p.EMAIL LIKE ? OR p.PHONE_NUMBER LIKE ? ORDER BY p.NAME";
+    db.all(query, [SEARCH], (err, rows) => {
+        if (err) return handleError(err, res, 500);
+        res.json(rows);
+    })
+});
+
 router.get("/:id", (req, res) => {
     const query = "SELECT * FROM PERSON WHERE ID = ?";
     db.get(query, [req.params.id], (err, row) => {
