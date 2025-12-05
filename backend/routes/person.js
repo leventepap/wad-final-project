@@ -41,7 +41,7 @@ router.post("/", (req, res) => {
     const query = "INSERT INTO PERSON (NAME, ADDRESS, EMAIL, PHONE_NUMBER) VALUES (?, ?, ?, ?)";
     db.run(query, [NAME, ADDRESS, EMAIL, PHONE_NUMBER], function(err) {  // Changed to regular function
         if (err) return handleError(err, res, 500);
-        res.json({ ID: this.lastID });  // Now this.lastID will work correctly
+        res.json({ ID: this.lastID });
     });
 });
 

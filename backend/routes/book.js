@@ -22,9 +22,9 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
     const { ISBN, TITLE, EDITION, PUBLICATION } = req.body;
     const query = "INSERT INTO BOOK (ISBN, TITLE, EDITION, PUBLICATION) VALUES (?, ?, ?, ?)";
-    db.run(query, [ISBN, TITLE, EDITION, PUBLICATION], (err) => {
+    db.run(query, [ISBN, TITLE, EDITION, PUBLICATION], function(err) {
         if (err) return handleError(err, res, 500);
-        res.json({ id: this.lastID });
+        res.json({ ISBN: this.lastID });
     });
 });
 
@@ -50,10 +50,19 @@ router.patch("/:id", (req, res) => {
     }
 
     values.push(req.params.id); // ISBN at the end for the WHERE clause
-    const query = `UPDATE BOOK SET ${fields.join(", ")} WHERE ISBN = ?`;
-    db.run(query, values, (err) => {
+    const updateQuery = `UPDATE BOOK SET ${fields.join(", ")} WHERE ISBN = ?`;
+
+    db.run(updateQuery, values, function(err) {
         if (err) return handleError(err, res, 500);
-        res.json({ updatedRows: this.changes });
+        if (this.changes === 0) {
+            return handleError(new Error("Book not found"), res, 404);
+        }
+
+        const selectQuery = "SELECT * FROM BOOK WHERE ISBN = ?";
+        db.get(selectQuery, [req.params.id], (err, row) => {
+            if (err) return handleError(err, res, 500);
+            res.json(row);
+        });
     });
 });
 
