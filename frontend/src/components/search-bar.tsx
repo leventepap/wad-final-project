@@ -4,8 +4,8 @@ import React, {useState} from "react";
 
 export type SearchBarProps = {
     submitSearch: Function;
-    link: string;
-    label: string;
+    link?: string;
+    label?: string;
 }
 
 export default function SearchBar({submitSearch, link, label}: SearchBarProps) {
@@ -26,9 +26,11 @@ export default function SearchBar({submitSearch, link, label}: SearchBarProps) {
                        className="w-full px-4 py-2 rounded-lg"/>
                 <Button label="Search" onCLick={() => submitSearch(search)}/>
             </div>
-            <Link href={link}>
-                <h1 className="text-indigo-500 font-bold text-lg px-4">{label}</h1>
-            </Link>
+            {link && label ?
+                <Link href={link}>
+                    <h1 className="text-indigo-500 font-bold text-lg px-4">{label}</h1>
+                </Link> : null
+            }
         </div>
     );
 }

@@ -28,4 +28,34 @@ router.get("/:id/books", (req, res) => {
     });
 });
 
+router.get("/persons", (req, res) => {
+    const query = "SELECT * FROM PERSON WHERE ID NOT IN (SELECT PERSON_ID FROM AUTHOR)";
+    db.all(query, [], function(err, row) {
+        if (err) return handleError(err, res, 500);
+        res.json(row);
+    });
+});
+
+router.post("/persons/search", (req, res) => {
+    const { SEARCH } = req.body;
+    const query = "SELECT * FROM PERSON WHERE ID NOT IN (SELECT PERSON_ID FROM AUTHOR) AND NAME LIKE ? ORDER BY NAME";
+    db.all(query, [SEARCH], function(err, row) {
+        if (err) return handleError(err, res, 500);
+        res.json(row);
+    });
+});
+
+router.post("/add", (req, res) => {
+    const { AUTHOR_IDS } = req.body;
+    if (!Array.isArray(AUTHOR_IDS) || AUTHOR_IDS.length === 0) {
+        return handleError("Invalid input: AUTHOR_PERSON_IDS must be a non-empty array", res, 400);
+    }
+    const placeholders = AUTHOR_IDS.map(() => "(?)").join(",");
+    const query = `INSERT INTO AUTHOR (PERSON_ID) VALUES ${placeholders}`;
+    db.run(query, AUTHOR_IDS, function(err) {
+        if (err) return handleError(err, res, 500);
+        res.json({ INSERTED: AUTHOR_IDS });
+    });
+});
+
 module.exports = router;
