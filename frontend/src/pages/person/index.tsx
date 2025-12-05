@@ -37,17 +37,17 @@ export default function PersonsPage() {
     return (
         <Page title="Persons">
             <div className="min-w-full bg-white/50 backdrop-blur-sm shadow-lg rounded-lg p-2 flex flex-row justify-between items-center">
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-row gap-2 items-center">
                     <input type="text"
                            placeholder="Search..."
                            value={search}
                            onChange={handleInputChange}
                            className="w-full px-4 py-2 rounded-lg"/>
                     <button onClick={submitSearch}
-                            className="bg-indigo-500 text-white px-2 py-1 rounded-lg hover:bg-indigo-600 shadow-md hover:shadow-lg focus:outline-none">Search</button>
+                            className="bg-indigo-500 text-white px-4 py-1 cursor-pointer rounded-lg hover:bg-indigo-600 shadow-md hover:shadow-lg focus:outline-none">Search</button>
                 </div>
                 <Link href="/person/add">
-                    <h1 className="text-indigo-500 font-medium text-xl px-4">Add new person</h1>
+                    <h1 className="text-indigo-500 font-bold text-lg px-4">Add new person</h1>
                 </Link>
             </div>
             <PersonOverviewTable persons={persons}/>

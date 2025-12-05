@@ -29,12 +29,12 @@ export default function PersonOverviewTable(props: { persons: PersonOverview[] }
                                 </Link> : null
                             }
                             {person.MEMBER_PERSON_ID ?
-                                <Link href={`/author/${person.MEMBER_PERSON_ID}`}>
+                                <Link href={`/member/${person.MEMBER_PERSON_ID}`}>
                                     <Tag title="Member" color="yellow"/>
                                 </Link> : null
                             }
                             {person.STAFF_PERSON_ID ?
-                                <Link href={`/author/${person.AUTHOR_PERSON_ID}`}>
+                                <Link href={`/staff/${person.STAFF_PERSON_ID}`}>
                                     <Tag title="Staff" color="purple"/>
                                 </Link> : null
                             }
