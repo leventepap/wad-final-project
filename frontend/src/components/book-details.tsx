@@ -10,7 +10,7 @@ export default function BookDetails(props: { book?: Book, setBook?: Function }) 
     const [bookForm, setBookForm] = useState<Book>(props.book || {
         ISBN: 0,
         TITLE: "",
-        EDITION: 1,
+        EDITION: 0,
         PUBLICATION: "",
     });
     const borderColor = edit ? "border-b-indigo-500" : "border-b-gray-500";
@@ -92,16 +92,16 @@ export default function BookDetails(props: { book?: Book, setBook?: Function }) 
     return (
         <div className="bg-white/50 backdrop-blur-sm border-gray-200 shadow-lg rounded-lg flex flex-row justify-between p-4">
             <div className="flex flex-col gap-4">
-                <label className="text-sm mb-[-18px] text-indigo-500">Name</label>
+                <label className="text-sm mb-[-18px] text-indigo-500">ISBN</label>
                 <input
                     type="text"
                     name="ISBN"
-                    value={bookForm.ISBN}
+                    value={bookForm.ISBN === 0 ? "" : bookForm.ISBN}
                     onChange={handleInputChange}
                     disabled={!edit}
                     className={`${borderColor} border-b-[1px] px-2 py-1 w-64`}
                 />
-                <label className="text-sm mb-[-18px] text-indigo-500">Email</label>
+                <label className="text-sm mb-[-18px] text-indigo-500">Title</label>
                 <input
                     type="text"
                     name="TITLE"
@@ -110,16 +110,16 @@ export default function BookDetails(props: { book?: Book, setBook?: Function }) 
                     disabled={!edit}
                     className={`${borderColor} border-b-[1px] px-2 py-1 w-64`}
                 />
-                <label className="text-sm mb-[-18px] text-indigo-500">Address</label>
+                <label className="text-sm mb-[-18px] text-indigo-500">Edition</label>
                 <input
                     type="text"
                     name="EDITION"
-                    value={bookForm.EDITION}
+                    value={bookForm.EDITION === 0 ? "" : bookForm.EDITION}
                     onChange={handleInputChange}
                     disabled={!edit}
                     className={`${borderColor} border-b-[1px] px-2 py-1 w-64`}
                 />
-                <label className="text-sm mb-[-18px] text-indigo-500">Phone Number</label>
+                <label className="text-sm mb-[-18px] text-indigo-500">Publication</label>
                 <input
                     type="text"
                     name="PUBLICATION"

@@ -46,7 +46,7 @@ export default function PersonsPage() {
                     <button onClick={submitSearch}
                             className="bg-indigo-500 text-white px-4 py-1 cursor-pointer rounded-lg hover:bg-indigo-600 shadow-md hover:shadow-lg focus:outline-none">Search</button>
                 </div>
-                <Link href="/person/add">
+                <Link href={`${PERSON_BASE_URL}/add`}>
                     <h1 className="text-indigo-500 font-bold text-lg px-4">Add new person</h1>
                 </Link>
             </div>

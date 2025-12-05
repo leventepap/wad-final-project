@@ -11,6 +11,15 @@ router.get("/", (req, res) => {
     });
 });
 
+router.post("/search", (req, res) => {
+    const { SEARCH } = req.body;
+    const query = "SELECT * FROM BOOK WHERE TITLE LIKE ?";
+    db.all(query, [SEARCH], (err, rows) => {
+        if (err) return handleError(err, res, 500);
+        res.json(rows);
+    })
+});
+
 router.get("/:id", (req, res) => {
     const query = "SELECT * FROM BOOK WHERE ISBN = ?";
     db.get(query, [req.params.id], (err, row) => {
