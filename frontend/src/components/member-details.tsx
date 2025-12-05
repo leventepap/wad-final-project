@@ -3,6 +3,7 @@ import {Member} from "@/models/member";
 import {Person} from "@/models/person";
 import Tag from "@/components/tag";
 import {instance, PERSON_BASE_URL} from "@/utils/fetching";
+import Button, {ButtonColor} from "@/components/button";
 
 export default function MemberDetails(props: { member: Member, setMember: Function }) {
 
@@ -18,7 +19,7 @@ export default function MemberDetails(props: { member: Member, setMember: Functi
         }));
     };
 
-    const handleSubmit = () => {
+    const submitUpdate = () => {
         instance.patch(`${PERSON_BASE_URL}/${props.member.PERSON_ID}`, personForm)
             .then(res => {
                 props.setMember({
@@ -34,6 +35,22 @@ export default function MemberDetails(props: { member: Member, setMember: Functi
         setPersonForm(props.member);
         setEdit(false);
     };
+
+    const editSection = () => {
+        return (
+            <div className="flex flex-col gap-2">
+                {edit ? null :
+                    <Button label="Edit" onCLick={() => setEdit(true)}/>
+                }
+                {!edit ? null :
+                    <Button label="Cancel" onCLick={handleCancel} color={ButtonColor.INACTIVE}/>
+                }
+                {!edit ? null :
+                    <Button label="Save" onCLick={submitUpdate}/>
+                }
+            </div>
+        );
+    }
 
     return (
         <div className="bg-white/50 backdrop-blur-sm border-gray-200 shadow-lg rounded-lg flex flex-row justify-between p-4">
@@ -80,24 +97,7 @@ export default function MemberDetails(props: { member: Member, setMember: Functi
                 <span>Joined: {props.member.JOINED}</span>
                 {props.member.TERMINATED && <span>Terminated: {props.member.TERMINATED}</span>}
 
-                {edit ? null :
-                    <button onClick={() => setEdit(true)}
-                            className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 shadow-md hover:shadow-lg focus:outline-none cursor-pointer mt-auto">
-                        Edit
-                    </button>
-                }
-                {!edit ? null :
-                    <button onClick={handleCancel}
-                            className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 shadow-md hover:shadow-lg focus:outline-none cursor-pointer mt-auto">
-                        Cancel
-                    </button>
-                }
-                {!edit ? null :
-                    <button onClick={handleSubmit}
-                            className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 shadow-md hover:shadow-lg focus:outline-none cursor-pointer mt-2">
-                        Save
-                    </button>
-                }
+                {editSection()}
             </div>
         </div>
     );

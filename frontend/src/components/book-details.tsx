@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {Book} from "@/models/book";
 import {BOOK_BASE_URL, instance} from "@/utils/fetching";
 import {useRouter} from "next/router";
+import Button, {ButtonColor} from "@/components/button";
 
 export default function BookDetails(props: { book?: Book, setBook?: Function }) {
 
@@ -56,10 +57,7 @@ export default function BookDetails(props: { book?: Book, setBook?: Function }) 
     const createSection = () => {
         return (
             <div className="flex flex-col gap-2">
-                <button onClick={submitCreate}
-                        className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 shadow-md hover:shadow-lg focus:outline-none cursor-pointer mt-2">
-                    Create
-                </button>
+                <Button label="Create" onCLick={submitCreate}/>
             </div>
         );
     }
@@ -68,22 +66,13 @@ export default function BookDetails(props: { book?: Book, setBook?: Function }) 
         return (
             <div className="flex flex-col gap-2">
                 {edit ? null :
-                    <button onClick={() => setEdit(true)}
-                            className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 shadow-md hover:shadow-lg focus:outline-none cursor-pointer mt-auto">
-                        Edit
-                    </button>
+                    <Button label="Edit" onCLick={() => setEdit(true)}/>
                 }
                 {!edit ? null :
-                    <button onClick={handleCancel}
-                            className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 shadow-md hover:shadow-lg focus:outline-none cursor-pointer mt-auto">
-                        Cancel
-                    </button>
+                    <Button label="Cancel" onCLick={handleCancel} color={ButtonColor.INACTIVE}/>
                 }
                 {!edit ? null :
-                    <button onClick={submitUpdate}
-                            className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 shadow-md hover:shadow-lg focus:outline-none cursor-pointer mt-2">
-                        Save
-                    </button>
+                    <Button label="Save" onCLick={submitUpdate}/>
                 }
             </div>
         );

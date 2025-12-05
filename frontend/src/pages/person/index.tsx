@@ -4,6 +4,7 @@ import {instance, PERSON_BASE_URL} from "@/utils/fetching";
 import Page from "@/components/page";
 import PersonTable from "@/components/person-table";
 import Link from "next/link";
+import Button from "@/components/button";
 
 export default function PersonsPage() {
 
@@ -43,8 +44,7 @@ export default function PersonsPage() {
                            value={search}
                            onChange={handleInputChange}
                            className="w-full px-4 py-2 rounded-lg"/>
-                    <button onClick={submitSearch}
-                            className="bg-indigo-500 text-white px-4 py-1 cursor-pointer rounded-lg hover:bg-indigo-600 shadow-md hover:shadow-lg focus:outline-none">Search</button>
+                    <Button label="Search" onCLick={submitSearch}/>
                 </div>
                 <Link href={`${PERSON_BASE_URL}/add`}>
                     <h1 className="text-indigo-500 font-bold text-lg px-4">Add new person</h1>
