@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Person} from "@/models/person";
-import {instance} from "@/utils/fetching";
+import {instance, PERSON_BASE_URL} from "@/utils/fetching";
 import {useRouter} from "next/router";
 
 export default function PersonDetails(props: { person?: Person, setPerson?: Function }) {
@@ -25,16 +25,16 @@ export default function PersonDetails(props: { person?: Person, setPerson?: Func
     };
 
     const submitCreate = () => {
-        instance.post("/person", personForm)
+        instance.post(PERSON_BASE_URL, personForm)
             .then(res => {
-                router.push(`/person/${res.data.ID}`);
+                router.push(`${PERSON_BASE_URL}/${res.data.ID}`);
             })
             .catch(err => console.log(err));
     }
 
     const submitUpdate = () => {
         if (props.person) {
-            instance.patch(`/person/${props.person.ID}`, personForm)
+            instance.patch(`${PERSON_BASE_URL}/${props.person.ID}`, personForm)
                 .then(res => {
                     if (props.setPerson) {
                         props.setPerson({

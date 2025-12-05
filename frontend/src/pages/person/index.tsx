@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {PersonOverview} from "@/models/person-overview";
-import {instance} from "@/utils/fetching";
+import {instance, PERSON_BASE_URL} from "@/utils/fetching";
 import Page from "@/components/page";
-import PersonOverviewTable from "@/components/person-overview-table";
+import PersonTable from "@/components/person-table";
 import Link from "next/link";
 
 export default function PersonsPage() {
@@ -23,13 +23,13 @@ export default function PersonsPage() {
     }
 
     const getPersons = () => {
-        instance.get("/person/overview")
+        instance.get(`${PERSON_BASE_URL}/overview`)
             .then(res => setPersons(res.data))
             .catch(err => console.log(err));
     }
 
     const searchPersons = () => {
-        instance.post(`/person/search`, { SEARCH: `%${search}%` })
+        instance.post(`${PERSON_BASE_URL}/search`, { SEARCH: `%${search}%` })
             .then(res => setPersons(res.data))
             .catch(err => console.log(err));
     }
@@ -50,7 +50,7 @@ export default function PersonsPage() {
                     <h1 className="text-indigo-500 font-bold text-lg px-4">Add new person</h1>
                 </Link>
             </div>
-            <PersonOverviewTable persons={persons}/>
+            <PersonTable persons={persons}/>
         </Page>
     );
 }

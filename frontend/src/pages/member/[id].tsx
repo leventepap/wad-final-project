@@ -1,7 +1,7 @@
 import {useRouter} from 'next/router'
 import {useEffect, useState} from "react";
 import {Member} from "@/models/member";
-import {instance} from "@/utils/fetching";
+import {instance, MEMBER_BASE_URL} from "@/utils/fetching";
 import Page from "@/components/page";
 import MemberDetails from "@/components/member-details";
 
@@ -12,7 +12,7 @@ export default function MemberPage() {
 
     useEffect(() => {
         if (!router.query.id) return;
-        instance.get(`/member/${router.query.id}`)
+        instance.get(`${MEMBER_BASE_URL}/${router.query.id}`)
             .then(res => setMember(res.data))
             .catch(err => console.log(err));
     },[router.query.id])

@@ -1,7 +1,7 @@
 import {useRouter} from 'next/router'
 import {useEffect, useState} from "react";
 import {Person} from "@/models/person";
-import {instance} from "@/utils/fetching";
+import {instance, PERSON_BASE_URL} from "@/utils/fetching";
 import Page from "@/components/page";
 import PersonDetails from "@/components/person-details";
 
@@ -12,7 +12,7 @@ export default function PersonPage() {
 
     useEffect(() => {
         if (!router.query.id) return;
-        instance.get(`/person/${router.query.id}`)
+        instance.get(`${PERSON_BASE_URL}/${router.query.id}`)
             .then(res => setPerson(res.data))
             .catch(err => console.log(err));
     },[router.query.id])

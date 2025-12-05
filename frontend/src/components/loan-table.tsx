@@ -1,13 +1,8 @@
 import {Loan} from "@/models/loan";
 import Link from "next/link";
+import {formatDate} from "@/utils/utils";
 
 export default function LoanTable(props: { loans: Loan[] }) {
-
-    const formatDate= (date: string | null) => {
-        if (!date) return "";
-        const d = new Date(date);
-        return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
-    }
 
     const rowColor= (loan: Loan) => {
         const now = new Date();

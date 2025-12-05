@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Member} from "@/models/member";
 import {Person} from "@/models/person";
 import Tag from "@/components/tag";
-import {instance} from "@/utils/fetching";
+import {instance, PERSON_BASE_URL} from "@/utils/fetching";
 
 export default function MemberDetails(props: { member: Member, setMember: Function }) {
 
@@ -19,7 +19,7 @@ export default function MemberDetails(props: { member: Member, setMember: Functi
     };
 
     const handleSubmit = () => {
-        instance.patch(`/person/${props.member.PERSON_ID}`, personForm)
+        instance.patch(`${PERSON_BASE_URL}/${props.member.PERSON_ID}`, personForm)
             .then(res => {
                 props.setMember({
                     ...props.member,
