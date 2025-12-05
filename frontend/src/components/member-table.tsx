@@ -1,6 +1,7 @@
 import {Member} from "@/models/member";
 import Tag from "@/components/tag";
 import Link from "next/link";
+import {MEMBER_BASE_URL} from "@/utils/fetching";
 
 export default function MemberTable(props: { members: Member[] }) {
     return (
@@ -19,7 +20,7 @@ export default function MemberTable(props: { members: Member[] }) {
                     <tr key={member.ID} className="hover:bg-gray-50 transition-colors duration-200">
                         <td className="px-6 py-4 whitespace-nowrap text-sm">{member.ID}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-indigo-500">
-                            <Link href={`/member/${member.ID}`}>{member.NAME}</Link>
+                            <Link href={`${MEMBER_BASE_URL}/${member.ID}`}>{member.NAME}</Link>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">{member.EMAIL}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">

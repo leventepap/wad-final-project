@@ -1,5 +1,6 @@
 import {Book} from "@/models/book";
 import Link from "next/link";
+import {BOOK_BASE_URL} from "@/utils/fetching";
 
 export default function BookTable(props: { books: Book[] }) {
     return (
@@ -15,7 +16,7 @@ export default function BookTable(props: { books: Book[] }) {
                     {props.books.map((book) => (
                         <tr key={book.ISBN} className="hover:bg-gray-50 transition-colors duration-200">
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-indigo-500">
-                                <Link href={`/book/${book.ISBN}`}>{book.TITLE}</Link>
+                                <Link href={`${BOOK_BASE_URL}/${book.ISBN}`}>{book.TITLE}</Link>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm">{book.EDITION}</td>
                         </tr>

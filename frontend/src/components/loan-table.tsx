@@ -1,6 +1,7 @@
 import {Loan} from "@/models/loan";
 import Link from "next/link";
 import {formatDate} from "@/utils/utils";
+import {MEMBER_BASE_URL} from "@/utils/fetching";
 
 export default function LoanTable(props: { loans: Loan[] }) {
 
@@ -34,7 +35,7 @@ export default function LoanTable(props: { loans: Loan[] }) {
                         <td className="px-6 py-4 whitespace-nowrap text-sm">{formatDate(loan.DUE_DATE)}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">{formatDate(loan.RETURN_DATE)}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-indigo-500">
-                            <Link href={`/member/${loan.MEMBER_ID}`}>{loan.BORROWER}</Link>
+                            <Link href={`${MEMBER_BASE_URL}/${loan.MEMBER_ID}`}>{loan.BORROWER}</Link>
                         </td>
                     </tr>
                 ))}

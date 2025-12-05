@@ -1,6 +1,7 @@
 import {PersonOverview} from "@/models/person-overview";
 import Tag from "@/components/tag";
 import Link from "next/link";
+import {AUTHOR_BASE_URL, MEMBER_BASE_URL, PERSON_BASE_URL, STAFF_BASE_URL} from "@/utils/fetching";
 
 export default function PersonTable(props: { persons: PersonOverview[] }) {
     return (
@@ -19,22 +20,22 @@ export default function PersonTable(props: { persons: PersonOverview[] }) {
                     <tr key={person.ID} className="hover:bg-gray-50 transition-colors duration-200">
                         <td className="px-6 py-4 whitespace-nowrap text-sm">{person.ID}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-indigo-500">
-                            <Link href={`/person/${person.ID}`}>{person.NAME}</Link>
+                            <Link href={`${PERSON_BASE_URL}/${person.ID}`}>{person.NAME}</Link>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">{person.ADDRESS}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">
                             {person.AUTHOR_PERSON_ID ?
-                                <Link href={`/author/${person.AUTHOR_PERSON_ID}`}>
+                                <Link href={`${AUTHOR_BASE_URL}/${person.AUTHOR_PERSON_ID}`}>
                                     <Tag title="Author" color="blue"/>
                                 </Link> : null
                             }
                             {person.MEMBER_PERSON_ID ?
-                                <Link href={`/member/${person.MEMBER_PERSON_ID}`}>
+                                <Link href={`${MEMBER_BASE_URL}/${person.MEMBER_PERSON_ID}`}>
                                     <Tag title="Member" color="yellow"/>
                                 </Link> : null
                             }
                             {person.STAFF_PERSON_ID ?
-                                <Link href={`/staff/${person.STAFF_PERSON_ID}`}>
+                                <Link href={`${STAFF_BASE_URL}/${person.STAFF_PERSON_ID}`}>
                                     <Tag title="Staff" color="purple"/>
                                 </Link> : null
                             }
