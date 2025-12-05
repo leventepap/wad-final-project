@@ -3,24 +3,18 @@ import {PersonOverview} from "@/models/person-overview";
 import {instance, PERSON_BASE_URL} from "@/utils/fetching";
 import Page from "@/components/page";
 import PersonTable from "@/components/person-table";
-import Link from "next/link";
-import Button from "@/components/button";
+import SearchBar from "@/components/search-bar";
 
 export default function PersonsPage() {
 
     const [persons, setPersons] = useState<PersonOverview[]>([]);
-    const [search, setSearch] = useState<string>("");
 
     useEffect(() => {
         getPersons()
     },[])
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearch(e.target.value);
-    };
-
-    const submitSearch = () => {
-        search.length > 0 ? searchPersons() : getPersons();
+    const submitSearch = (term: string) => {
+        term.length > 0 ? searchPersons(term) : getPersons();
     }
 
     const getPersons = () => {
@@ -29,27 +23,18 @@ export default function PersonsPage() {
             .catch(err => console.log(err));
     }
 
-    const searchPersons = () => {
-        instance.post(`${PERSON_BASE_URL}/search`, { SEARCH: `%${search}%` })
+    const searchPersons = (term: string) => {
+        instance.post(`${PERSON_BASE_URL}/search`, { SEARCH: `%${term}%` })
             .then(res => setPersons(res.data))
             .catch(err => console.log(err));
     }
 
     return (
         <Page title="Persons">
-            <div className="min-w-full bg-white/50 backdrop-blur-sm shadow-lg rounded-lg p-2 flex flex-row justify-between items-center">
-                <div className="flex flex-row gap-2 items-center">
-                    <input type="text"
-                           placeholder="Search..."
-                           value={search}
-                           onChange={handleInputChange}
-                           className="w-full px-4 py-2 rounded-lg"/>
-                    <Button label="Search" onCLick={submitSearch}/>
-                </div>
-                <Link href={`${PERSON_BASE_URL}/add`}>
-                    <h1 className="text-indigo-500 font-bold text-lg px-4">Add new person</h1>
-                </Link>
-            </div>
+            <SearchBar submitSearch={submitSearch}
+                       link={`${PERSON_BASE_URL}/add`}
+                       label="Add new person"
+            />
             <PersonTable persons={persons}/>
         </Page>
     );
