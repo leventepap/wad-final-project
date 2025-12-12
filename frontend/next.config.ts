@@ -6,4 +6,16 @@ const nextConfig: NextConfig = {
   reactStrictMode: false,
 };
 
+module.exports = {
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/book',
+        permanent: false,
+      },
+    ];
+  },
+};
+
 export default nextConfig;
