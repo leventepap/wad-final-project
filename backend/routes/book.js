@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
-const { handleError } = require("../utils");
+const { handleError, trafficLogger } = require("../utils");
 
 router.get("/", (req, res) => {
+    trafficLogger.info(req);
     const query = "SELECT * FROM BOOK";
     db.all(query, [], (err, rows) => {
         if (err) return handleError(err, res, 500);
@@ -12,6 +13,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/search", (req, res) => {
+    trafficLogger.info(req);
     const { SEARCH } = req.body;
     const query = "SELECT * FROM BOOK WHERE TITLE LIKE ?";
     db.all(query, [SEARCH], (err, rows) => {
@@ -21,6 +23,7 @@ router.post("/search", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
+    trafficLogger.info(req);
     const query = "SELECT * FROM BOOK WHERE ISBN = ?";
     db.get(query, [req.params.id], (err, row) => {
         if (err) return handleError(err, res, 500);
@@ -29,6 +32,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
+    trafficLogger.info(req);
     const { ISBN, TITLE, EDITION, PUBLICATION } = req.body;
     const query = "INSERT INTO BOOK (ISBN, TITLE, EDITION, PUBLICATION) VALUES (?, ?, ?, ?)";
     db.run(query, [ISBN, TITLE, EDITION, PUBLICATION], function(err) {
@@ -38,6 +42,7 @@ router.post("/", (req, res) => {
 });
 
 router.patch("/:id", (req, res) => {
+    trafficLogger.info(req);
     const { TITLE, EDITION, PUBLICATION } = req.body;
     const fields = [];
     const values = [];
@@ -76,6 +81,7 @@ router.patch("/:id", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
+    trafficLogger.info(req);
     db.run("DELETE FROM BOOK WHERE ISBN = ?", [req.params.id], (err) => {
         if (err) return handleError(err, res, 500);
         res.json({ deletedRows: this.changes });

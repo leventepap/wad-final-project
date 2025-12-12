@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
-const { handleError } = require("../utils");
+const { handleError, trafficLogger } = require("../utils");
 
 router.get("/", (req, res) => {
+    trafficLogger.info(req);
     const query = "SELECT * FROM PERSON";
     db.all(query, [], (err, rows) => {
         if (err) return handleError(err, res, 500);
@@ -12,6 +13,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/overview", (req, res) => {
+    trafficLogger.info(req);
     const query = "SELECT p.ID, p.NAME, p.ADDRESS, a.PERSON_ID as AUTHOR_PERSON_ID, m.PERSON_ID as MEMBER_PERSON_ID, s.PERSON_ID as STAFF_PERSON_ID FROM PERSON p LEFT JOIN AUTHOR a ON p.ID = a.PERSON_ID LEFT JOIN MEMBER m ON p.ID = m.PERSON_ID LEFT JOIN STAFF s ON p.ID = s.PERSON_ID";
     db.all(query, [], (err, rows) => {
         if (err) return handleError(err, res, 500);
@@ -20,6 +22,7 @@ router.get("/overview", (req, res) => {
 });
 
 router.post("/search", (req, res) => {
+    trafficLogger.info(req);
     const { SEARCH } = req.body;
     const query = "SELECT p.ID, p.NAME, p.ADDRESS, a.PERSON_ID as AUTHOR_PERSON_ID, m.PERSON_ID as MEMBER_PERSON_ID, s.PERSON_ID as STAFF_PERSON_ID FROM PERSON p LEFT JOIN AUTHOR a ON p.ID = a.PERSON_ID LEFT JOIN MEMBER m ON p.ID = m.PERSON_ID LEFT JOIN STAFF s ON p.ID = s.PERSON_ID WHERE p.NAME LIKE ? OR p.ADDRESS LIKE ? OR p.EMAIL LIKE ? OR p.PHONE_NUMBER LIKE ? ORDER BY p.NAME";
     db.all(query, [SEARCH], (err, rows) => {
@@ -29,6 +32,7 @@ router.post("/search", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
+    trafficLogger.info(req);
     const query = "SELECT * FROM PERSON WHERE ID = ?";
     db.get(query, [req.params.id], (err, row) => {
         if (err) return handleError(err, res, 500);
@@ -37,6 +41,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
+    trafficLogger.info(req);
     const { NAME, ADDRESS, EMAIL, PHONE_NUMBER } = req.body;
     const query = "INSERT INTO PERSON (NAME, ADDRESS, EMAIL, PHONE_NUMBER) VALUES (?, ?, ?, ?)";
     db.run(query, [NAME, ADDRESS, EMAIL, PHONE_NUMBER], function(err) {  // Changed to regular function
@@ -46,6 +51,7 @@ router.post("/", (req, res) => {
 });
 
 router.patch("/:id", (req, res) => {
+    trafficLogger.info(req);
     const { NAME, ADDRESS, EMAIL, PHONE_NUMBER } = req.body;
     const fields = [];
     const values = [];
@@ -88,6 +94,7 @@ router.patch("/:id", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
+    trafficLogger.info(req);
     db.run("DELETE FROM PERSON WHERE ID = ?", [req.params.id], (err) => {
         if (err) return handleError(err, res, 500);
         res.json({ deletedRows: this.changes });
