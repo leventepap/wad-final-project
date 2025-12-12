@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {AuthorOverview} from "@/models/author-overview";
-import {instance, AUTHOR_BASE_URL} from "@/utils/fetching";
+import {AUTHOR_BASE_URL, instance} from "@/utils/fetching";
 import Page from "@/components/page";
 import AuthorTable from "@/components/author-table";
 import SearchBar from "@/components/search-bar";
