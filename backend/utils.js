@@ -1,5 +1,3 @@
-const handleError = (err, res, code) => res.status(code).json({ error: err.message });
-
 class Logger {
     constructor(service) {
         this.service = service;
@@ -46,7 +44,20 @@ class TrafficLogger extends Logger {
 
 const trafficLogger = new TrafficLogger();
 
+class ErrorResponse {
+    constructor() {
+        this.logger = new Logger("ERROR");
+    }
+
+    create(err, res, code) {
+        this.logger.error(err);
+        return res.status(code).json({ error: err.message });
+    }
+}
+
+const errorResponse = new ErrorResponse();
+
 module.exports = {
-    handleError,
-    trafficLogger
+    trafficLogger,
+    errorResponse
 };
