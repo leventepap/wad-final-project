@@ -58,4 +58,12 @@ router.post("/add", (req, res) => {
     });
 });
 
+router.delete("/:id", (req, res) => {
+    const query = "DELETE FROM AUTHOR WHERE PERSON_ID = ?";
+    db.run(query, [req.params.id], function(err) {
+        if (err) return handleError(err, res, 500);
+        res.json({ DELETED: this.changes });
+    });
+});
+
 module.exports = router;
