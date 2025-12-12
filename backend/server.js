@@ -16,6 +16,7 @@ const personRoutes = require("./routes/person");
 const memberRoutes = require("./routes/member");
 const loanRoutes = require("./routes/loan");
 const authorRoutes = require("./routes/author");
+const copyRoutes = require("./routes/copy");
 
 app.use(cors({
     origin: CLIENT_URL,
@@ -31,6 +32,7 @@ app.use("/api/person", personRoutes);
 app.use("/api/member", memberRoutes);
 app.use("/api/loan", loanRoutes);
 app.use("/api/author", authorRoutes);
+app.use("/api/copy", copyRoutes);
 
 app.listen(SERVER_PORT, () => {
     sysLogger.info(`Library Management System backend server running on ${SERVER_URL}`);
