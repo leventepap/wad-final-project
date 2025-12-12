@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "axios": "^1.13.2",
-    "next": "16.0.5",
+    "next": "^16.0.10",
     "react": "19.2.0",
     "react-dom": "19.2.0"
   },
@@ -21,6 +21,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.0.5",
+    "snyk": "^1.1301.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
