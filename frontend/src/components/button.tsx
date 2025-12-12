@@ -18,7 +18,7 @@ export default function Button(props: { label: string, onCLick: Function, color?
 
     return (
         <button onClick={() => props.onCLick()}
-                className={`${colorClass} px-4 py-2 rounded-lg text-white shadow-md hover:shadow-lg focus:outline-none cursor-pointer mt-auto`}>
+                className={`px-4 py-2 rounded-lg text-white shadow-md hover:shadow-lg focus:outline-none cursor-pointer mt-auto ${colorClass}`}>
             {props.label}
         </button>
     );
