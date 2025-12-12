@@ -1,48 +1,43 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
-const { trafficLogger, errorResponse } = require("../utils");
+const { response } = require("../utils");
 
 router.get("/", (req, res) => {
-    trafficLogger.info(req);
     const query = "SELECT * FROM BOOK";
     db.all(query, [], (err, rows) => {
-        if (err) return errorResponse.create(err, res, 500);
-        res.json(rows);
+        if (err) return response.error(err, res, 500);
+        response.all(res, rows);
     });
 });
 
 router.post("/search", (req, res) => {
-    trafficLogger.info(req);
     const { SEARCH } = req.body;
     const query = "SELECT * FROM BOOK WHERE TITLE LIKE ?";
     db.all(query, [SEARCH], (err, rows) => {
-        if (err) return errorResponse.create(err, res, 500);
-        res.json(rows);
+        if (err) return response.error(err, res, 500);
+        response.all(res, rows);
     })
 });
 
 router.get("/:id", (req, res) => {
-    trafficLogger.info(req);
     const query = "SELECT * FROM BOOK WHERE ISBN = ?";
     db.get(query, [req.params.id], (err, row) => {
-        if (err) return errorResponse.create(err, res, 500);
-        res.json(row);
+        if (err) return response.error(err, res, 500);
+        response.single(res, row, "ISBN");
     });
 });
 
 router.post("/", (req, res) => {
-    trafficLogger.info(req);
     const { ISBN, TITLE, EDITION, PUBLICATION } = req.body;
     const query = "INSERT INTO BOOK (ISBN, TITLE, EDITION, PUBLICATION) VALUES (?, ?, ?, ?)";
     db.run(query, [ISBN, TITLE, EDITION, PUBLICATION], function(err) {
-        if (err) return errorResponse.create(err, res, 500);
-        res.json({ ISBN: this.lastID });
+        if (err) return response.error(err, res, 500);
+        response.create(res, { ISBN: this.lastID }, `Book ${ISBN} added successfully!`);
     });
 });
 
 router.patch("/:id", (req, res) => {
-    trafficLogger.info(req);
     const { TITLE, EDITION, PUBLICATION } = req.body;
     const fields = [];
     const values = [];
@@ -60,31 +55,30 @@ router.patch("/:id", (req, res) => {
         values.push(PUBLICATION);
     }
     if (fields.length === 0) {
-        return errorResponse.create(new Error("No fields to update"), res, 400);
+        return response.error(new Error("No fields to update"), res, 400);
     }
 
     values.push(req.params.id); // ISBN at the end for the WHERE clause
     const updateQuery = `UPDATE BOOK SET ${fields.join(", ")} WHERE ISBN = ?`;
 
     db.run(updateQuery, values, function(err) {
-        if (err) return errorResponse.create(err, res, 500);
+        if (err) return response.error(err, res, 500);
         if (this.changes === 0) {
-            return errorResponse.create(new Error("Book not found"), res, 404);
+            return response.error(new Error("Book not found"), res, 404);
         }
 
         const selectQuery = "SELECT * FROM BOOK WHERE ISBN = ?";
         db.get(selectQuery, [req.params.id], (err, row) => {
-            if (err) return errorResponse.create(err, res, 500);
-            res.json(row);
+            if (err) return response.error(err, res, 500);
+            response.single(res, row, "ISBN");
         });
     });
 });
 
 router.delete("/:id", (req, res) => {
-    trafficLogger.info(req);
     db.run("DELETE FROM BOOK WHERE ISBN = ?", [req.params.id], (err) => {
-        if (err) return errorResponse.create(err, res, 500);
-        res.json({ deletedRows: this.changes });
+        if (err) return response.error(err, res, 500);
+        response.create(res, { deletedRows: this.changes }, `Book ${req.params.id} deleted successfully!`);
     });
 });
 
