@@ -33,7 +33,7 @@ router.get("/", (req, res) => {
 router.post("/search", (req, res) => {
     const { SEARCH } = req.body;
     if (!SEARCH || typeof SEARCH !== 'string') {
-        return response.error(new Error("Invalid search parameter"), res, 400);
+        return response.error(new Error("Invalid search parameter."), res, 400);
     }
     
     const query = "SELECT * FROM BOOK WHERE TITLE LIKE ?";
@@ -45,7 +45,7 @@ router.post("/search", (req, res) => {
 
 router.get("/:id", (req, res) => {
     if (!isValidISBN(req.params.id)) {
-        return response.error(new Error("Invalid ISBN format"), res, 400);
+        return response.error(new Error("Invalid ISBN format."), res, 400);
     }
 
     const query = "SELECT * FROM BOOK WHERE ISBN = ?";
@@ -61,19 +61,19 @@ router.post("/", (req, res) => {
     const validationErrors = [];
 
     if (!ISBN || !isValidISBN(ISBN)) {
-        validationErrors.push("Invalid ISBN format. Must be 13 digits.");
+        validationErrors.push("Invalid ISBN format: Must be 13 digits.");
     }
     
     if (!TITLE || !isValidTitle(TITLE)) {
-        validationErrors.push("Invalid title. Must be between 1 and 255 characters.");
+        validationErrors.push("Invalid title: Must be between 1 and 255 characters.");
     }
 
     if (!EDITION || !isValidEdition(EDITION)) {
-        validationErrors.push("Invalid edition. Must be between 1 and 50 characters.");
+        validationErrors.push("Invalid edition: Must be between 1 and 50 characters.");
     }
 
     if (!PUBLICATION || !isValidPublication(PUBLICATION)) {
-        validationErrors.push("Invalid publication date. Must be a valid date not in the future.");
+        validationErrors.push("Invalid publication date: Must be a valid date not in the future.");
     }
 
     if (validationErrors.length > 0) {
@@ -84,7 +84,7 @@ router.post("/", (req, res) => {
     db.run(query, [ISBN, TITLE, EDITION, PUBLICATION], function(err) {
         if (err) {
             if (err.code === 'SQLITE_CONSTRAINT') {
-                return response.error(new Error("ISBN already exists"), res, 409);
+                return response.error(new Error("ISBN already exists."), res, 409);
             }
             return response.error(err, res, 500);
         }
@@ -94,7 +94,7 @@ router.post("/", (req, res) => {
 
 router.patch("/:id", (req, res) => {
     if (!isValidISBN(req.params.id)) {
-        return response.error(new Error("Invalid ISBN format"), res, 400);
+        return response.error(new Error("Invalid ISBN format."), res, 400);
     }
 
     const { TITLE, EDITION, PUBLICATION } = req.body;
@@ -104,7 +104,7 @@ router.patch("/:id", (req, res) => {
 
     if (TITLE !== undefined) {
         if (!isValidTitle(TITLE)) {
-            validationErrors.push("Invalid title. Must be between 1 and 255 characters.");
+            validationErrors.push("Invalid title: Must be between 1 and 255 characters.");
         } else {
             fields.push("TITLE = ?");
             values.push(TITLE);
@@ -113,7 +113,7 @@ router.patch("/:id", (req, res) => {
 
     if (EDITION !== undefined) {
         if (!isValidEdition(EDITION)) {
-            validationErrors.push("Invalid edition. Must be between 1 and 50 characters.");
+            validationErrors.push("Invalid edition: Must be between 1 and 50 characters.");
         } else {
             fields.push("EDITION = ?");
             values.push(EDITION);
@@ -122,7 +122,7 @@ router.patch("/:id", (req, res) => {
 
     if (PUBLICATION !== undefined) {
         if (!isValidPublication(PUBLICATION)) {
-            validationErrors.push("Invalid publication date. Must be a valid date not in the future.");
+            validationErrors.push("Invalid publication date: Must be a valid date not in the future.");
         } else {
             fields.push("PUBLICATION = ?");
             values.push(PUBLICATION);
@@ -134,7 +134,7 @@ router.patch("/:id", (req, res) => {
     }
 
     if (fields.length === 0) {
-        return response.error(new Error("No valid fields to update"), res, 400);
+        return response.error(new Error("No valid fields to update."), res, 400);
     }
 
     values.push(req.params.id);
@@ -143,7 +143,7 @@ router.patch("/:id", (req, res) => {
     db.run(updateQuery, values, function(err) {
         if (err) return response.error(err, res, 500);
         if (this.changes === 0) {
-            return response.error(new Error("Book not found"), res, 404);
+            return response.error(new Error("Book not found."), res, 404);
         }
 
         const selectQuery = "SELECT * FROM BOOK WHERE ISBN = ?";
@@ -156,13 +156,13 @@ router.patch("/:id", (req, res) => {
 
 router.delete("/:id", (req, res) => {
     if (!isValidISBN(req.params.id)) {
-        return response.error(new Error("Invalid ISBN format"), res, 400);
+        return response.error(new Error("Invalid ISBN format."), res, 400);
     }
 
     db.run("DELETE FROM BOOK WHERE ISBN = ?", [req.params.id], function(err) {
         if (err) return response.error(err, res, 500);
         if (this.changes === 0) {
-            return response.error(new Error("Book not found"), res, 404);
+            return response.error(new Error("Book not found."), res, 404);
         }
         response.create(res, { deletedRows: this.changes }, `Book ${req.params.id} deleted successfully!`);
     });

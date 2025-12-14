@@ -3,6 +3,7 @@ import {Book} from "@/models/book";
 import {BOOK_BASE_URL, instance} from "@/utils/fetching";
 import {useRouter} from "next/router";
 import Button, {ButtonColor} from "@/components/button";
+import ErrorMessage from "@/components/error-message";
 
 export default function BookDetails(props: { book?: Book, setBook?: Function }) {
 
@@ -14,6 +15,9 @@ export default function BookDetails(props: { book?: Book, setBook?: Function }) 
         EDITION: 0,
         PUBLICATION: "",
     });
+    const [error, setError] = useState<string[]>([]);
+    const [showError, setShowError] = useState<boolean>(false);
+
     const borderColor = edit ? "border-b-indigo-500" : "border-b-gray-500";
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +33,14 @@ export default function BookDetails(props: { book?: Book, setBook?: Function }) 
             .then(res => {
                 router.push(`${BOOK_BASE_URL}/${res.data.ISBN}`);
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                let messages = err.response.data.error
+                    .split(".")
+                    .filter((message: string) => message.trim() !== "")
+                    .map((message: string) => message.trim());
+                setError(messages);
+                setShowError(true);
+            });
     }
 
     const submitUpdate = () => {
@@ -43,7 +54,14 @@ export default function BookDetails(props: { book?: Book, setBook?: Function }) 
                     }
                     setEdit(false);
                 })
-                .catch(err => console.log(err));
+                .catch(err => {
+                    let messages = err.response.data.error
+                        .split(".")
+                        .filter((message: string) => message.trim() !== "")
+                        .map((message: string) => message.trim());
+                    setError(messages);
+                    setShowError(true);
+                });
         }
     };
 
@@ -79,46 +97,50 @@ export default function BookDetails(props: { book?: Book, setBook?: Function }) 
     }
 
     return (
-        <div className="bg-white/50 backdrop-blur-sm border-gray-200 shadow-lg rounded-lg flex flex-row justify-between p-4">
-            <div className="flex flex-col gap-4">
-                <label className="text-sm mb-[-18px] text-indigo-500">ISBN</label>
-                <input
-                    type="text"
-                    name="ISBN"
-                    value={bookForm.ISBN === 0 ? "" : bookForm.ISBN}
-                    onChange={handleInputChange}
-                    disabled={!edit}
-                    className={`${borderColor} border-b-[1px] px-2 py-1 w-64`}
-                />
-                <label className="text-sm mb-[-18px] text-indigo-500">Title</label>
-                <input
-                    type="text"
-                    name="TITLE"
-                    value={bookForm.TITLE}
-                    onChange={handleInputChange}
-                    disabled={!edit}
-                    className={`${borderColor} border-b-[1px] px-2 py-1 w-64`}
-                />
-                <label className="text-sm mb-[-18px] text-indigo-500">Edition</label>
-                <input
-                    type="text"
-                    name="EDITION"
-                    value={bookForm.EDITION === 0 ? "" : bookForm.EDITION}
-                    onChange={handleInputChange}
-                    disabled={!edit}
-                    className={`${borderColor} border-b-[1px] px-2 py-1 w-64`}
-                />
-                <label className="text-sm mb-[-18px] text-indigo-500">Publication</label>
-                <input
-                    type="text"
-                    name="PUBLICATION"
-                    value={bookForm.PUBLICATION}
-                    onChange={handleInputChange}
-                    disabled={!edit}
-                    className={`${borderColor} border-b-[1px] px-2 py-1 w-64`}
-                />
+        <div className="flex flex-col gap-12">
+            <div className="bg-white/50 backdrop-blur-sm border-gray-200 shadow-lg rounded-lg flex flex-row justify-between p-4">
+                <div className="flex flex-col gap-4">
+                    <label className="text-sm mb-[-18px] text-indigo-500">ISBN</label>
+                    <input
+                        type="text"
+                        name="ISBN"
+                        value={bookForm.ISBN === 0 ? "" : bookForm.ISBN}
+                        onChange={handleInputChange}
+                        disabled={!edit}
+                        className={`${borderColor} border-b-[1px] px-2 py-1 w-64`}
+                    />
+                    <label className="text-sm mb-[-18px] text-indigo-500">Title</label>
+                    <input
+                        type="text"
+                        name="TITLE"
+                        value={bookForm.TITLE}
+                        onChange={handleInputChange}
+                        disabled={!edit}
+                        className={`${borderColor} border-b-[1px] px-2 py-1 w-64`}
+                    />
+                    <label className="text-sm mb-[-18px] text-indigo-500">Edition</label>
+                    <input
+                        type="text"
+                        name="EDITION"
+                        value={bookForm.EDITION === 0 ? "" : bookForm.EDITION}
+                        onChange={handleInputChange}
+                        disabled={!edit}
+                        className={`${borderColor} border-b-[1px] px-2 py-1 w-64`}
+                    />
+                    <label className="text-sm mb-[-18px] text-indigo-500">Publication</label>
+                    <input
+                        type="date"
+                        name="PUBLICATION"
+                        value={bookForm.PUBLICATION}
+                        onChange={handleInputChange}
+                        disabled={!edit}
+                        className={`${borderColor} border-b-[1px] px-2 py-1 w-64`}
+                    />
+                </div>
+                {props.book ? editSection() : createSection()}
             </div>
-            {props.book ? editSection() : createSection()}
+
+            {showError ? <ErrorMessage messages={error} setShow={setShowError} /> : null}
         </div>
     );
 }
